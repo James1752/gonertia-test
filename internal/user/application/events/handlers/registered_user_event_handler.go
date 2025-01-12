@@ -14,7 +14,7 @@ func NewUserRegisteredEventHandler() *UserRegisteredEventHandler {
 	return &UserRegisteredEventHandler{}
 }
 
-func (c *UserRegisteredEventHandler) Handle(ctx context.Context, event *user_events.RegisterUserCommand) error {
+func (c *UserRegisteredEventHandler) Handle(ctx context.Context, event *user_events.UserRegisteredEvent) error {
 	fmt.Printf("User has been Registered: %s %s, %s\n", event.FirstName, event.LastName, event.Email)
 
 	return nil

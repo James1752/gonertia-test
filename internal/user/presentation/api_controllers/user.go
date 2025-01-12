@@ -1,4 +1,4 @@
-package controllers_user
+package user_controllers
 
 import (
 	user_commands "github.com/James1752/gonertia-test/internal/user/application/commands"
@@ -10,17 +10,15 @@ import (
 	"github.com/mehdihadeli/go-mediatr"
 )
 
-type UserController struct {
+type UserApiController struct {
 }
 
-func NewUserController() *UserController {
-	router := &UserController{}
-
-	return router
+func NewUserApiController() *UserApiController {
+	return &UserApiController{}
 }
 
-func (uc *UserController) RegisterRoutes(apiRouter fiber.Router) {
-	userRouter := apiRouter.Group("/user")
+func (uc *UserApiController) RegisterRoutes(router fiber.Router) {
+	userRouter := router.Group("/user")
 
 	//Register
 	userRouter.Post("/register", api.NewFiberRequestHandler(func(c *fiber.Ctx, v *validator.Validate) (uuid.UUID, error) {

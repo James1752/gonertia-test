@@ -11,7 +11,17 @@ https://github.com/mehdihadeli/Go-MediatR
 
 ## Thoughts
 
-Got the Command and Events working - Maybe work on adding a query and also getting some kind of database integrated...
+1) Proper logging - maybe some request decorator logging
+2) Config - how to get config through to the application like server port address
+3) https - use a self signed cert?
+4) Database and some kind of unit of work pattern for transactional
+5) Go through and add documentation to all aspects of the application
+6) Take a look at composability - how can I pull parts of module implementation and have it reused in other modules etc... Can we do this for any other files?
+
+
+Traceability - assign and id or guid or something that is traeable
+Figure out some way to start modules independly - for instance only start users module
+    - Currently main starts all moduls and main api - modules started in go routines
 
 
 
