@@ -1,4 +1,4 @@
-package api_dto_user
+package user_api_dto
 
 type UserRequestDto struct {
 	FirstName string `validate:"required"`

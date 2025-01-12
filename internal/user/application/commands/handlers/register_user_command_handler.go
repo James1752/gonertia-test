@@ -1,10 +1,11 @@
-package commmands_user
+package user_commands
 
 import (
 	"context"
 
-	events_user "github.com/James1752/gonertia-test/internal/application/events/user/user_registered"
-	user_domain "github.com/James1752/gonertia-test/internal/domain/user"
+	user_commands "github.com/James1752/gonertia-test/internal/user/application/commands"
+	user_events "github.com/James1752/gonertia-test/internal/user/application/events"
+	user_domain "github.com/James1752/gonertia-test/internal/user/domain"
 	"github.com/google/uuid"
 	"github.com/mehdihadeli/go-mediatr"
 )
@@ -17,7 +18,7 @@ func NewRegisterUserCommandHandler(userRepository user_domain.UserRepository) *R
 	return &RegisterUserCommandHandler{userRepository: userRepository}
 }
 
-func (c *RegisterUserCommandHandler) Handle(ctx context.Context, command *RegisterUserCommand) (uuid.UUID, error) {
+func (c *RegisterUserCommandHandler) Handle(ctx context.Context, command *user_commands.RegisterUserCommand) (uuid.UUID, error) {
 	//Create the user entity
 	user := &user_domain.User{
 		UserID:       command.UserID,
@@ -35,7 +36,7 @@ func (c *RegisterUserCommandHandler) Handle(ctx context.Context, command *Regist
 	}
 
 	//Publish event
-	userRegisteredEvent := events_user.NewRegisterUserCommand(user.FirstName, user.LastName, user.Email)
+	userRegisteredEvent := user_events.NewRegisterUserCommand(user.FirstName, user.LastName, user.Email)
 	err = mediatr.Publish(ctx, userRegisteredEvent)
 	if err != nil {
 		return uuid.Nil, err

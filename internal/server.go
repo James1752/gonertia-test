@@ -1,9 +1,9 @@
-package api_server
+package server
 
 import (
 	"log"
 
-	controllers_user "github.com/James1752/gonertia-test/internal/api/controllers"
+	user_controller "github.com/James1752/gonertia-test/internal/user/presentation/api_controllers"
 	"github.com/gofiber/fiber/v2"
 )
 
@@ -29,5 +29,5 @@ func (s *Server) setupRoutes() {
 	api := s.app.Group("/api/v1")
 
 	//User Controller
-	controllers_user.NewUserController().RegisterRoutes(api)
+	user_controller.NewUserController().RegisterRoutes(api)
 }

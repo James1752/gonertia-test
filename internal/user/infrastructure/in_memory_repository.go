@@ -1,4 +1,4 @@
-package infrastructure_user
+package user_infrastructure
 
 import (
 	"encoding/json"
@@ -6,7 +6,7 @@ import (
 	"log"
 	"sync"
 
-	user_domain "github.com/James1752/gonertia-test/internal/domain/user"
+	user_domain "github.com/James1752/gonertia-test/internal/user/domain"
 	"github.com/google/uuid"
 )
 

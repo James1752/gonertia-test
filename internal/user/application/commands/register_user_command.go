@@ -1,4 +1,4 @@
-package commmands_user
+package user_commands
 
 import (
 	"time"

@@ -1,4 +1,4 @@
-package events_user
+package user_events
 
 type RegisterUserCommand struct {
 	FirstName string `validate:"required"`
