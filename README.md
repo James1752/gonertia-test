@@ -17,6 +17,7 @@ https://github.com/mehdihadeli/Go-MediatR
 4) Database and some kind of unit of work pattern for transactional
 5) Go through and add documentation to all aspects of the application
 6) Take a look at composability - how can I pull parts of module implementation and have it reused in other modules etc... Can we do this for any other files?
+Maybe some kind of application abstraction also
 
 
 Traceability - assign and id or guid or something that is traeable

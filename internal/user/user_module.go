@@ -8,26 +8,28 @@ import (
 	user_events "github.com/James1752/gonertia-test/internal/user/application/events/handlers"
 	user_domain "github.com/James1752/gonertia-test/internal/user/domain"
 	user_infrastructure "github.com/James1752/gonertia-test/internal/user/infrastructure"
-	user_controllers "github.com/James1752/gonertia-test/internal/user/presentation/api_controllers"
+	user_api_handlers "github.com/James1752/gonertia-test/internal/user/presentation/api_handlers"
 	"github.com/James1752/gonertia-test/pkg/api"
 	"github.com/gofiber/fiber/v2"
 	"github.com/mehdihadeli/go-mediatr"
 	"go.uber.org/dig"
 )
 
+type UserModuleConfig struct {
+	Host string
+	Port string
+}
 type UserModule struct {
 	name      string
-	host      string
-	port      string
-	container *dig.Container
+	config    *UserModuleConfig
+	container dig.Container
 }
 
-func NewUserModule(host string, port string) *UserModule {
+func NewUserModule(container dig.Container, config *UserModuleConfig) *UserModule {
 	module := &UserModule{
 		name:      "user-module",
-		host:      host,
-		port:      port,
-		container: dig.New(),
+		config:    config,
+		container: container,
 	}
 
 	if err := module.registerServices(); err != nil {
@@ -41,14 +43,18 @@ func NewUserModule(host string, port string) *UserModule {
 	return module
 }
 
+func (m *UserModule) Start() error {
+	log.Printf("MADE IT HERE \n\n")
+	return nil
+}
+
 func (m *UserModule) GetHttpServerUrlBase() string {
-	return fmt.Sprintf("http://%s:%s/%s", m.host, m.port, m.name)
+	return fmt.Sprintf("http://%s:%s/%s", m.config.Host, m.config.Port, m.name)
 }
 
 func (m *UserModule) StartHttpServer() error {
 	return m.container.Invoke(func(
-		controllers []api.FiberController,
-		apiControllers []api.FiberApiController,
+		controllers []api.FiberHandler,
 	) {
 		app := fiber.New()
 		moduleRouter := app.Group("/" + m.name)
@@ -56,34 +62,26 @@ func (m *UserModule) StartHttpServer() error {
 		for _, controller := range controllers {
 			controller.RegisterRoutes(moduleRouter)
 		}
-		for _, controller := range apiControllers {
-			controller.RegisterRoutes(moduleRouter)
-		}
 
 		go func() {
 			log.Printf("Starting %s module server on %s", m.name, m.GetHttpServerUrlBase())
-			log.Fatal(app.Listen(m.host + ":" + m.port))
+			log.Fatal(app.Listen(m.config.Host + ":" + m.config.Port))
 		}()
 	})
 }
 
 func (m *UserModule) registerServices() error {
 	providers := []func() error{
-		//Controllers
+		//Handlers
 		func() error {
-			return m.container.Provide(func() []api.FiberController {
-				return []api.FiberController{}
-			})
-		},
-		//API Controllers
-		func() error {
-			return m.container.Provide(func() []api.FiberApiController {
-				return []api.FiberApiController{
-					user_controllers.NewUserApiController(),
-					user_controllers.NewTestApiController(),
+			return m.container.Provide(func() []api.FiberHandler {
+				return []api.FiberHandler{
+					user_api_handlers.NewUserApiHandler(),
+					user_api_handlers.NewTestApiHandler(),
 				}
 			})
 		},
+
 		//Repositories
 		func() error {
 			return m.container.Provide(func() user_domain.UserRepository {

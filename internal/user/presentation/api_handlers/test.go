@@ -1,4 +1,4 @@
-package user_controllers
+package user_api_handlers
 
 import (
 	api "github.com/James1752/gonertia-test/pkg/api"
@@ -6,14 +6,14 @@ import (
 	"github.com/gofiber/fiber/v2"
 )
 
-type TestApiController struct {
+type TestApiHandler struct {
 }
 
-func NewTestApiController() *TestApiController {
-	return &TestApiController{}
+func NewTestApiHandler() *TestApiHandler {
+	return &TestApiHandler{}
 }
 
-func (uc *TestApiController) RegisterRoutes(router fiber.Router) {
+func (uc *TestApiHandler) RegisterRoutes(router fiber.Router) {
 	userRouter := router.Group("/test")
 
 	//Register

@@ -1,6 +1,5 @@
 package module
 
-type Module interface {
-	StartHttpServer() error
-	GetHttpServerUrlBase() string
+type ModuleService interface {
+	Start() error
 }
